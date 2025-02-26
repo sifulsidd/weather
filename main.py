@@ -3,9 +3,10 @@
 import requests
 
 # change the value after s= to search for specific recipe
+# can make search any number of characters just finds something most in common
 def information_about_recipe():
     # get an arrabiata
-    response = requests.get("https://www.themealdb.com/api/json/v1/1/search.php?s=ARRABIATA")
+    response = requests.get("https://www.themealdb.com/api/json/v1/1/search.php?s=carrot")
 
     # print(response.status_code)
 
@@ -13,30 +14,41 @@ def information_about_recipe():
     if response.status_code == 200:
         # print(response.json())
         res = response.json()
-
-    item = res['meals'][0]
+    mealArr = []
+    
+    maxLength = min(len(res['meals']), 10)
+    # first ten elements are gonna be shown
+    
+    for i in range(0, maxLength):
+        mealArr.append(res['meals'][i])
+    
+    # item = res['meals'][0]
     ingredients = []
-    for i in range(1,21):
-        ingredient = item[f"strIngredient{i}"]
-        measurement = item[f"strMeasure{i}"]
-        sentence = ""
-        if ingredient is not None and len(ingredient) > 0:
-            sentence += ingredient
+    # loops through array and gets a few elements and their ingredients
+    for item in mealArr:
+        for i in range(1,21):
+            ingredient = item[f"strIngredient{i}"]
+            measurement = item[f"strMeasure{i}"]
+            sentence = ""
+            if ingredient is not None and len(ingredient) > 0:
+                sentence += ingredient
+            
+            if measurement is not None and len(measurement) > 0:
+                sentence += ": " + measurement
+            
+            if len(sentence) > 0:
+                ingredients.append(sentence)
         
-        if measurement is not None and len(measurement) > 0:
-            sentence += ": " + measurement
-        
-        if len(sentence) > 0:
-            ingredients.append(sentence)
-    print(item['strMeal'])
-    print(ingredients)
-    print(item['strYoutube'])
-    print(item['strInstructions'])
-    print(item['strMealThumb'])
+        print(item['strMeal'])
+        print(ingredients)
+        print(item['strYoutube'])
+        print(item['strInstructions'])
+        print(item['strMealThumb'])
+        print("______________________")
     # return ingredients
 
 
-# information_about_recipe()
+information_about_recipe()
 
 # random recipe received with all the information necessary
 def random_recipe():
@@ -106,3 +118,10 @@ def categories():
     print(categories)
 
 # categories()
+
+def by_ingredient():
+    response = requests.get("https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast")
+    if response.status_code == 200:
+        res = response.json()
+    
+    
