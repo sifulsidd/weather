@@ -32,6 +32,7 @@ def information_about_recipe():
     print(ingredients)
     print(item['strYoutube'])
     print(item['strInstructions'])
+    print(item['strMealThumb'])
     # return ingredients
 
 
@@ -66,6 +67,7 @@ def random_recipe():
     print(ingredients)
     print(item['strYoutube'])
     print(item['strInstructions'])
+    print(item['strMealThumb'])
     
 # random_recipe()
 
