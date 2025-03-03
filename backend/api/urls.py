@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path("search/", views.SearchView.as_view(), name="search"),
-    path("random/", views.RandomView.as_view(), name="random")
+    path("random/", views.RandomView.as_view(), name="random"),
+    path("categories/", views.CategoriesView.as_view(), name="all-categories"),
 ]
