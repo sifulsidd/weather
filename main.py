@@ -124,4 +124,8 @@ def by_ingredient():
     if response.status_code == 200:
         res = response.json()
     
+    print(res)
+
+by_ingredient()
+    
     
