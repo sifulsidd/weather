@@ -42,11 +42,26 @@ class CategoriesView(generics.RetrieveAPIView):
         except requests.exceptions.RequestException as e:
             print(f"An unexpected error occurred: {e}")
     
-class CategorySearch(generics.RetrieveAPIView):
-    pass
+
+            
 
 class IngredientView(generics.RetrieveAPIView):
-    pass
+    def get(self, request):
+        query = request.GET.get('search', None)
+        
+        if query:
+            try:
+                api_url = f"https://www.themealdb.com/api/json/v1/1/filter.php?i={query}"
+                response = requests.get(api_url)
+                return Response(response.json())
+            except requests.exceptions.Timeout:
+                print("The request timed out")
+            except requests.exceptions.HTTPError as err:
+                print(f"HTTP error occured: {err}")
+            except requests.exceptions.ConnectionError:
+                print("A connection error occurred.")
+            except requests.exceptions.RequestException as e:
+                print(f"An unexpected error occurred: {e}")
 
 # gets just the random information 
 class RandomView(generics.RetrieveAPIView):
