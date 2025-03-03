@@ -4,8 +4,11 @@ from rest_framework.response import Response
 import requests
 
 # Create your views here.
+
+# the search feature is populating 
 class SearchView(generics.RetrieveAPIView):
     def get(self, request):
+        # this is basically getting the url where search is the paramter and the value is going to be the thing we input
         query = request.GET.get('search', None)
         
         if query:
@@ -23,7 +26,7 @@ class SearchView(generics.RetrieveAPIView):
                 print(f"An unexpected error occurred: {e}")
                 
     
-    # request.data gets the data from the front end and makes it viewable for us in the backend
+# request.data gets the data from the front end and makes it viewable for us in the backend
 class CategoriesView(generics.RetrieveAPIView):
     pass
 
@@ -33,5 +36,18 @@ class CategorySearch(generics.RetrieveAPIView):
 class IngredientView(generics.RetrieveAPIView):
     pass
 
+# gets just the random information 
 class RandomView(generics.RetrieveAPIView):
-    pass
+    # the get method needs a request parameter even if unused
+    def get(self, request):
+        try:
+            response = requests.get("https://www.themealdb.com/api/json/v1/1/random.php")
+            return Response(response.json())
+        except requests.exceptions.Timeout:
+            print("The request timed out")
+        except requests.exceptions.HTTPError as err:
+            print(f"HTTP error occured: {err}")
+        except requests.exceptions.ConnectionError:
+            print("A connection error occurred.")
+        except requests.exceptions.RequestException as e:
+            print(f"An unexpected error occurred: {e}")
